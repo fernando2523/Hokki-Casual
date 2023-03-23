@@ -11,6 +11,8 @@ use App\Models\Store;
 use App\Models\Employee;
 use App\Models\Product;
 use App\Models\Reseller;
+use App\Models\Brand;
+use App\Models\Sub_category;
 use App\Models\warehouse;
 use App\Models\variation;
 use App\Models\Supplier_order;
@@ -37,13 +39,23 @@ class SaleController extends Controller
         $getstore = Store::with('detailsarea')->get();
         $getkasir = Employee::all()->where('role', '!=', 'ADMIN');
         $getreseller = Reseller::all();
-        // $getreseller = Reseller::all();
+        $getbrand = Brand::all();
+        $getcategory = Sub_category::all();
+        $getware = warehouse::all();
+
+        $getsupplier = DB::table('suppliers')->orderBy('id_sup', 'desc')->get();
+        $get_Supplier_Order = DB::table('supplier_orders')->select(DB::raw('idpo'), DB::raw('tanggal'), DB::raw('id_sup'),)->groupBy('idpo', 'tanggal', 'id_sup')->orderBy('idpo', 'desc')->limit(10)->get();
 
         return view('sale.sales', compact(
             'title',
             'getstore',
             'getkasir',
-            'getreseller'
+            'getreseller',
+            'getbrand',
+            'getware',
+            'getcategory',
+            'getsupplier',
+            'get_Supplier_Order',
         ));
     }
 
@@ -286,8 +298,8 @@ class SaleController extends Controller
                     ->where('id_produk', $idproduk[$i])
                     ->get('m_price');
 
-                    $diskonitemsatuan = intVal($discitem[$i]) / intVal($qty[$i]) ;
-                    $subtotalsatuan = intVal($subtotal[$i]) / intVal($qty[$i]) ;
+                $diskonitemsatuan = intVal($discitem[$i]) / intVal($qty[$i]);
+                $subtotalsatuan = intVal($subtotal[$i]) / intVal($qty[$i]);
 
                 if ($qty_baru >= 0) {
                     // print_r("QTY Lama".$get_qty."<br>");
@@ -314,9 +326,9 @@ class SaleController extends Controller
                     $data->size = $size[$i];
                     $data->qty = $qty_sales;
                     $data->selling_price = $selling_price[$i];
-                    $data->diskon_item = $diskonitemsatuan * $qty_sales ;
+                    $data->diskon_item = $diskonitemsatuan * $qty_sales;
                     $data->diskon_all = $discnota;
-                    $data->subtotal =  $subtotalsatuan * $qty_sales ;
+                    $data->subtotal =  $subtotalsatuan * $qty_sales;
                     $data->grandtotal = $grandtotal;
                     $data->cash = $cash;
                     $data->bca = $bca;

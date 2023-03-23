@@ -28,7 +28,7 @@ class CreateProductPiutangsTable extends Migration
             $table->string('desc')->nullable(true);
             $table->string('category');
             $table->string('quality');
-            $table->string('n_price')->nullable(true);
+            $table->string('selling_price')->nullable(true);
             $table->string('m_price')->nullable(true);
             $table->string('qty');
             $table->string('subtotal');

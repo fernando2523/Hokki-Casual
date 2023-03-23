@@ -8,20 +8,226 @@
                     <li class="breadcrumb-item active">SALES PAGE</li>
                 </ul>
 
-                {{-- <h1 class="page-header">
+                <h1 class="page-header">
                     Sales
-                </h1> --}}
+                </h1>
             </div>
+
+            <div class="ms-auto">
+            </div>
+            <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-yellow" data-bs-toggle="modal"
+                    data-bs-target="#modaldatatersedia"><i class="fa fa-plus-circle fa-fw me-1"></i> PILIH YANG SUDAH
+                    ADA</a></div>
+            <div class="ms-sm-3 mt-sm-0 mt-2"><a class="btn btn-outline-theme" data-bs-toggle="modal"
+                    data-bs-target="#modaldatabaru"><i class="fa fa-plus-circle fa-fw me-1"></i> Tambah Order</a></div>
         </div>
-        {{-- <div class="ms-sm-3 mt-sm-0 mt-2"><button class="btn btn-outline-lime" type="button" onclick="print_sales()"><i
-                    class="bi bi-arrow-clockwise fa-fw me-1"></i> awdawd</button>
-        </div> --}}
 
         <script>
             function print_sales() {
                 window.open("/print_sales");
             }
         </script>
+
+        <div class="modal fade" id="modaldatabaru" data-bs-backdrop="static">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-theme">Tambah Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form id="formadd" class="was-validated" method="POST" enctype="multipart/form-data"
+                        action="{{ url('/product/products/store') }}">
+                        @csrf
+                        <div class="modal-body">
+                            <div class="row form-group">
+                                <div class="col-12">
+                                    <div class="row form-group">
+                                        <div class="col-8 form-group mb-3">
+                                            <label class="form-label">Nama Produk</label>
+                                            <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                                name="produk" required placeholder="Silahkan masukan nama produk"
+                                                autocomplete="OFF">
+                                        </div>
+                                        <div class="col-2 form-group mb-3">
+                                            <label class="form-label">Size</label>
+                                            <select class="form-select form-select-sm text-theme" name="size" required>
+                                                <option value="" disabled selected>Size</option>
+                                                <option value="35">35</option>
+                                                <option value="36">36</option>
+                                                <option value="37">37</option>
+                                                <option value="38">38</option>
+                                                <option value="39">39</option>
+                                                <option value="40">40</option>
+                                                <option value="41">41</option>
+                                                <option value="42">42</option>
+                                                <option value="43">43</option>
+                                                <option value="44">44</option>
+                                                <option value="45">45</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-2 form-group mb-3">
+                                            <label class="form-label">Qty</label>
+                                            <input class="form-control form-control-sm text-theme is-invalid" type="number"
+                                                name="qty" required placeholder="0" autocomplete="OFF">
+                                        </div>
+
+                                        <div class="col-4 form-group position-relative mb-3">
+                                            <label class="form-label">Supplier</label>
+                                            <div class="position-relative text-center">
+                                                <select class="form-select form-select-sm text-theme text-center"
+                                                    name="id_sup">
+                                                    <option value="" disabled selected>Pilih Supplier</option>
+                                                    @foreach ($getsupplier as $gets)
+                                                        <option value="{{ $gets->id_sup }}">{{ $gets->supplier }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="invalid-tooltip">
+                                                    Silahkan pilih kualitas yang sesuai.
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-4 form-group mb-3">
+                                            <label class="form-label">Harga Beli <small class="text-warning">(Dari
+                                                    Toko)</small></label>
+                                            <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                                name="m_price" required placeholder="0" autocomplete="OFF"
+                                                type-currency="IDR">
+                                        </div>
+                                        <div class="col-4 form-group mb-3">
+                                            <label class="form-label">Harga Jual <small
+                                                    class="text-warning">(Marketplace)</small></label>
+                                            <input class="form-control form-control-sm text-theme is-invalid" type="text"
+                                                name="j_price" required placeholder="0" autocomplete="OFF"
+                                                type-currency="IDR">
+                                        </div>
+
+                                        <div class="col-3 form-group position-relative mb-3">
+                                            <label class="form-label">Brand</label>
+                                            <select class="form-select form-select-sm text-theme" name="id_brand" required>
+                                                <option value="" disabled selected>Pilih Brand</option>
+                                                @foreach ($getbrand as $gets)
+                                                    <option value="{{ $gets->id_brand }}">{{ $gets->brand }}</option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-tooltip">
+                                                Silahkan pilih nama brand yang sesuai.
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 form-group position-relative mb-3">
+                                            <label class="form-label">Kategori</label>
+                                            <select class="form-select form-select-sm text-theme" name="category"
+                                                required>
+                                                <option value="" disabled selected>Pilih Kategori</option>
+                                                @foreach ($getcategory as $gets)
+                                                    <option value="{{ $gets->sub_category }}">{{ $gets->sub_category }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            <div class="invalid-tooltip">
+                                                Silahkan pilih category yang sesuai.
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 form-group position-relative mb-3">
+                                            <label class="form-label">Kualitas</label>
+                                            <select class="form-select form-select-sm text-theme" name="quality" required>
+                                                <option value="" disabled selected>Pilih Kualitas</option>
+                                                {{-- <option value="LOKAL">LOKAL</option> --}}
+                                                <option value="IMPORT">IMPORT</option>
+                                                <option value="ORIGINAL">ORIGINAL</option>
+                                            </select>
+                                            <div class="invalid-tooltip">
+                                                Silahkan pilih kualitas yang sesuai.
+                                            </div>
+                                        </div>
+
+                                        <div class="col-3 form-group position-relative mb-3">
+                                            <label class="form-label">Warehouse</label>
+                                            @if (Auth::user()->role === 'SUPER-ADMIN')
+                                                <select class="form-select form-select-sm text-theme" name="id_ware"
+                                                    required>
+                                                    <option value="" disabled selected>Pilih Warehouse</option>
+                                                    @foreach ($getware as $gets)
+                                                        <option value="{{ $gets->id_ware }}">{{ $gets->warehouse }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @elseif (Auth::user()->role === 'HEAD-AREA')
+                                                <select class="form-select form-select-sm text-theme" name="id_ware"
+                                                    required>
+                                                    <option value="" disabled selected>Pilih Warehouse</option>
+                                                    @foreach ($userware as $users)
+                                                        @foreach ($getware as $gets)
+                                                            @if ($gets->id_area === $users->id_area)
+                                                                <option value="{{ $gets->id_ware }}">
+                                                                    {{ $gets->warehouse }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <select class="form-select form-select-sm text-theme" name="id_ware"
+                                                    required>
+                                                    @foreach ($userware as $users)
+                                                        @foreach ($getware as $gets)
+                                                            @if ($gets->id_ware === $users->id_ware)
+                                                                <option value="{{ $gets->id_ware }}" selected>
+                                                                    {{ $gets->warehouse }}
+                                                                </option>
+                                                            @endif
+                                                        @endforeach
+                                                    @endforeach
+                                                </select>
+                                            @endif
+                                            <div class="invalid-tooltip">
+                                                Silahkan pilih warehouse yang sesuai.
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mt-3" align="right">
+                                <button class="btn btn-theme" type="button" onclick="submitadd()">Save</button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modaldatatersedia" data-bs-backdrop="static" style="padding-top:12%;">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-theme">Pilih Order Yang Sudah Ada</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form class="was-validated" method="POST" enctype="multipart/form-data"
+                        action="{{ url('/reseller/resellers/store') }}">
+                        @csrf
+                        <div class="modal-body">
+
+                            <div class="row form-group">
+
+                            </div>
+                            <div class="form-group mt-3" align="right">
+                                <button class="btn btn-theme" type="submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <form id="form_pay" action="/savesales" method="POST">
             @csrf
             <div class="row">
@@ -29,8 +235,8 @@
                 <div class="col-xl-5">
                     <div class="row mb-3">
                         <div class="col-6">
-                            <select class="form-select fw-bold  form-select-sm text-theme" id="select_store" name="store"
-                                required>
+                            <select class="form-select fw-bold  form-select-sm text-theme" id="select_store"
+                                name="store" required>
                                 <option value="" disabled selected>Pilih Store..</option>
                                 @foreach ($getstore as $stores)
                                     <option data-upprice="{{ $stores->detailsarea[0]['up_price'] }}"
@@ -246,7 +452,7 @@
                         <div class="col-3">
                             <select class="form-select fw-bold form-select-sm text-theme" id="reseller_name"
                                 name="reseller_name" disabled>
-                                <option value="" disabled selected>Name Reseller..</option>
+                                <option value="" disabled selected>Name Marketplace..</option>
                                 @foreach ($getreseller as $reseller)
                                     <option value="{{ $reseller->nama }}">{{ $reseller->nama }}</option>
                                 @endforeach
@@ -257,7 +463,7 @@
                             $datenow = Carbon\Carbon::now()->format('Y-m-d');
                             ?>
                             <input class="form-control  fw-bold  form-control-sm text-lime text-center" type="text"
-                                name="r_tanggal" value="{{ $datenow }}" readonly>
+                                name="r_tanggal" value="no pesanan" readonly>
                         </div>
                     </div>
 
